@@ -34,3 +34,7 @@ body {
   button:active {
     background:#333333
   }
+
+  .component-btn {
+    width: 75px;
+  }

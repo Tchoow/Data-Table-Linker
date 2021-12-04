@@ -22,19 +22,40 @@ var nbComponents  = 0;
 function renderComponent(component) {
     var html = `
         <div class="component">
-            <div class="component-id">ID  : ${component.id}</div>
+            <div class="component-id">ID  : ${component.order}</div>
             <div class="component-name">Nom  : ${component.name}</div>
             <div class="component-type">Type : ${component.type}</div>
             <div class="component-order">${component.order}</div>
             <div class="component-compat">${component.compat}</div>
             <div class="component-btn">
-                <button class="btn-edit">Pairing</button>
-                <button class="btn-delete">Delete</button>
+                <button class="component-btn" onclick="pairingWith(${component.order});" >Pairing</button>
+                <button class="component-btn">Delete</button>
             </div>
         </div>
     `;
     return html;
 }
+
+
+function pairingWith(id) {
+    console.log('pairing : ' + id);
+    if (allComponents[id].pairing) {
+        allComponents.forEach(element => {
+            if (element.pairing) {
+                element.addCompatibility(allComponents[id]);
+                element.pairing = false;
+            }
+        });
+        allComponents[id].pairing = false;
+    } else {
+        allComponents[id].pairing = true;
+    }
+    
+    console.log(allComponents[id]);
+    renderComponent(allComponents[id]);
+}
+
+
 
 // append html to the DOM
 function appendComponent(component) {
@@ -50,17 +71,22 @@ function getComponentId() {
     }
 }
 
+console.log(getComponentId());
+console.log(getComponentId());
+console.log(getComponentId());
+
 
 
 // btnAdd pressed
 btnAdd.addEventListener('click', function() {
     appendComponent(allComponents[nbComponents]);
     console.log(allComponents[nbComponents]);
+    nbComponents++;
     
 });
 
 var Component = function (name, type, order) {
-    this.id            = function()  { getComponentId() };
+    this.id            = nbComponents;
     this.name          = name;
     this.type          = type;
     this.order         = order;
@@ -82,13 +108,15 @@ var Component = function (name, type, order) {
 // Frames
 // Roma L5 / Sector 5 V3 / Veyron / Beta95X V3 / Pavo30 / HX115
 allComponents.push( new Component('Apex', 'frame', 0));
+/*
+allComponents.push( new Component('Roma L5', 'frame', 0));
 allComponents.push( new Component('Roma L5', 'frame', 0));
 allComponents.push( new Component('Sector 5 V3', 'frame', 0));
 allComponents.push( new Component('Veyron', 'frame', 0));
 allComponents.push( new Component('Beta95X V3', 'frame', 0));
 allComponents.push( new Component('Pavo30', 'frame', 0));
 allComponents.push( new Component('HX115', 'frame', 0));
-
+*/
 // ESC
 // ESC Furling32 / Reaper 96K / Zeus HGLRC / Holybro / Racerstar RS6Ax4 / Tekko32 F4
 allComponents.push( new Component('ESC Furling32', 'esc', 1));
