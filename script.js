@@ -34,7 +34,7 @@ var Component = function (name, type, order) {
 allComponents.push( new Component('Chassis Apex', 'Frame', 0));
 allComponents.push( new Component('Motor T-max', 'Moror', 4));
 
-// add a compatibility to the first component
+
 allComponents[0].addCompatibility(allComponents[1]);
 
 console.log(allComponents);
