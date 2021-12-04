@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr-FR">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,8 +10,27 @@
 </head>
 <body>
     <button id="btn-add" class="btn btn-primary">Ajouter</button>
-    
-    
+    <table id="table-linker" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Lien</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input type="text" class="form-control" name="name" placeholder="Nom">
+                </td>
+                <td>
+                    <input type="text" class="form-control" name="link" placeholder="Lien">
+                </td>
+                <td>
+                    <button class="btn btn-danger">Supprimer</button>
+                </td>
+            </tr>
+        </tbody>
     <script src="script.js" ></script>
 </body>
 </html>
