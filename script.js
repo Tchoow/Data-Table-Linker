@@ -15,7 +15,7 @@ Component compatibliity;
 
 /*
 Fonction de pairing opérationelle 05/12/2021
-Prochaine tache :  associé une id par component
+Prochaine tache :  associer une id par component
 */
 
 
