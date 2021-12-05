@@ -13,10 +13,7 @@ int    order;
 Component compatibliity;
 */
 
-/*
-Fonction de pairing opérationelle 05/12/2021
-Prochaine tache :  associer une id par component
-*/
+
 
 
 const btnAdd      = document.querySelector('#btn-add');
@@ -26,14 +23,14 @@ var nbComponents  = 0;
 // render a component in html
 function renderComponent(component) {
     var html = `
-        <div class="component" id="c${component.order}">
-            <div class="component-id">ID  : ${component.order}</div>
+        <div class="component" id="c${component.id}">
+            <div class="component-id">ID  : ${component.id}</div>
             <div class="component-name">Nom  : ${component.name}</div>
             <div class="component-type">Type : ${component.type}</div>
             <div class="component-order">${component.order}</div>
             <div class="component-compat">${component.compat}</div>
             <div class="component-btn">
-                <button class="component-btn" onclick="pairingWith(${component.order});" >Pairing</button>
+                <button class="component-btn" onclick="pairingWith(${component.id});" >Pairing</button>
                 <button class="component-btn">Delete</button>
             </div>
         </div>
@@ -46,7 +43,7 @@ function pairingWith(id) {
     
     var oneComponentIsPairing = false;
     allComponents.forEach(element => {
-        if (element.pairing && element.order != id) {
+        if (element.pairing && element.id != id) {
             element.addCompatibility(allComponents[id]);
             oneComponentIsPairing = true;
             console.log(element.name + " is pairing with " + allComponents[id].name);
@@ -54,11 +51,10 @@ function pairingWith(id) {
     });
 
     if (oneComponentIsPairing) {
-        document.querySelector(`#c0`).style.background = "red";
-        document.querySelector(`#c1`).style.background = "red";
-        allComponents.forEach(element => {
-            element.pairing = false;
-        });
+        for(var i = 0; i < nbComponents; i++) {
+            allComponents[i].pairing = false;
+            document.querySelector(`#c${allComponents[i].id}`).style.backgroundColor = 'red';
+        }
         
         
     } else {
@@ -85,8 +81,6 @@ function appendComponent(component) {
 }
 
 
-
-
 // btnAdd pressed
 btnAdd.addEventListener('click', function() {
     appendComponent(allComponents[nbComponents]);
@@ -102,17 +96,28 @@ var Component = function (name, type, order) {
     this.compatibility = [];
     this.pairing       = false;
 
-    
-    
-
     this.addCompatibility = function(compatibility) {
         this.compatibility.push(compatibility);
     }
 
-
-
-
 }
+
+var Component = (function() {
+    var nextId = 0;
+
+     return function Component(name, type, order) {
+        this.id            = nextId++;
+        this.name          = name;
+        this.type          = type;
+        this.order         = order;
+        this.compatibility = [];
+        this.pairing       = false;
+    
+        this.addCompatibility = function(compatibility) {
+            this.compatibility.push(compatibility);
+        }
+  }
+})();
 
 // Frames
 // Roma L5 / Sector 5 V3 / Veyron / Beta95X V3 / Pavo30 / HX115
@@ -126,6 +131,8 @@ allComponents.push( new Component('Beta95X V3', 'frame', 0));
 allComponents.push( new Component('Pavo30', 'frame', 0));
 allComponents.push( new Component('HX115', 'frame', 0));
 */
+
+
 // ESC
 // ESC Furling32 / Reaper 96K / Zeus HGLRC / Holybro / Racerstar RS6Ax4 / Tekko32 F4
 allComponents.push( new Component('ESC Furling32', 'esc', 1));
@@ -134,8 +141,6 @@ allComponents.push( new Component('Zeus HGLRC', 'esc', 1));
 allComponents.push( new Component('Holybro', 'esc', 1));
 allComponents.push( new Component('Racerstar RS6Ax4', 'esc', 1));
 allComponents.push( new Component('Tekko32 F4', 'esc', 1));
-
-
 
 
 // Fly Controler
@@ -163,8 +168,6 @@ allComponents.push( new Component('tripales - HQprop', 'prop', 4));
 allComponents.push( new Component('NewBeeDrone Azi Tri Blade', 'prop', 4));
 allComponents.push( new Component('P4 Candy Cane', 'prop', 4));
 allComponents.push( new Component('Peanut Butter', 'prop', 4));
-
-
 
 
 //allComponents[0].addCompatibility(allComponents[1]);
