@@ -14,6 +14,8 @@ Component compatibliity;
 */
 
 
+/* fix delete button */
+
 
 
 const btnAdd      = document.querySelector('#btn-add');
@@ -28,14 +30,28 @@ function renderComponent(component) {
             <div class="component-name">Nom  : ${component.name}</div>
             <div class="component-type">Type : ${component.type}</div>
             <div class="component-order">${component.order}</div>
-            <div class="component-compat">${component.compat}</div>
+            <div class="component-compatibility">Compatibility :${component.compatibility}</div>
             <div class="component-btn">
                 <button class="component-btn" onclick="pairingWith(${component.id});" >Pairing</button>
-                <button class="component-btn">Delete</button>
+                <button class="component-btn" onClick="deleteComponent(${component.id});">Delete</button>
             </div>
         </div>
     `;
     return html;
+}
+
+function deleteComponent(id) {
+    allComponents.splice(-id, 1);
+    refreshComponent();
+}
+
+
+function refreshComponent() {
+    var componentContainer = document.querySelector('#component-container');
+    componentContainer.innerHTML = "";
+    allComponents.forEach(element => {
+        appendComponent(element);
+    });
 }
 
 
@@ -47,15 +63,17 @@ function pairingWith(id) {
             element.addCompatibility(allComponents[id]);
             oneComponentIsPairing = true;
             console.log(element.name + " is pairing with " + allComponents[id].name);
+            element.addCompatibility(allComponents[id].name);
+            refreshComponent();
         }
     });
 
     if (oneComponentIsPairing) {
+        // reset
         for(var i = 0; i < nbComponents; i++) {
             allComponents[i].pairing = false;
             document.querySelector(`#c${allComponents[i].id}`).style.backgroundColor = 'red';
         }
-        
         
     } else {
         if (allComponents[id].pairing) {
