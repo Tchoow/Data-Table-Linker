@@ -13,6 +13,11 @@ int    order;
 Component compatibliity;
 */
 
+/*
+Fonction de pairing opérationelle 05/12/2021
+Prochaine tache :  associé une id par component
+*/
+
 
 const btnAdd      = document.querySelector('#btn-add');
 var allComponents = [];
@@ -21,7 +26,7 @@ var nbComponents  = 0;
 // render a component in html
 function renderComponent(component) {
     var html = `
-        <div class="component">
+        <div class="component" id="c${component.order}">
             <div class="component-id">ID  : ${component.order}</div>
             <div class="component-name">Nom  : ${component.name}</div>
             <div class="component-type">Type : ${component.type}</div>
@@ -38,21 +43,36 @@ function renderComponent(component) {
 
 
 function pairingWith(id) {
-    console.log('pairing : ' + id);
-    if (allComponents[id].pairing) {
-        allComponents.forEach(element => {
-            if (element.pairing) {
-                element.addCompatibility(allComponents[id]);
-                element.pairing = false;
-            }
-        });
-        allComponents[id].pairing = false;
-    } else {
-        allComponents[id].pairing = true;
-    }
     
-    console.log(allComponents[id]);
-    renderComponent(allComponents[id]);
+    var oneComponentIsPairing = false;
+    allComponents.forEach(element => {
+        if (element.pairing && element.order != id) {
+            element.addCompatibility(allComponents[id]);
+            oneComponentIsPairing = true;
+            console.log(element.name + " is pairing with " + allComponents[id].name);
+        }
+    });
+
+    if (oneComponentIsPairing) {
+        document.querySelector(`#c0`).style.background = "red";
+        document.querySelector(`#c1`).style.background = "red";
+        allComponents.forEach(element => {
+            element.pairing = false;
+        });
+        
+        
+    } else {
+        if (allComponents[id].pairing) {
+            allComponents[id].pairing = false;
+            console.log(allComponents[id].name + " canceled pairing");
+            // style
+            document.querySelector(`#c${id}`).style.background = "red";
+        } else {
+            allComponents[id].pairing = true;
+            console.log(allComponents[id].name + " is now in pairing mode ");
+            document.querySelector(`#c${id}`).style.background = "green";
+        }
+    }
 }
 
 
@@ -64,23 +84,12 @@ function appendComponent(component) {
     componentContainer.insertAdjacentHTML('beforeend', html);
 }
 
-function getComponentId() {
-    var i = 0;
-    return function() {
-        return i++;
-    }
-}
-
-console.log(getComponentId());
-console.log(getComponentId());
-console.log(getComponentId());
 
 
 
 // btnAdd pressed
 btnAdd.addEventListener('click', function() {
     appendComponent(allComponents[nbComponents]);
-    console.log(allComponents[nbComponents]);
     nbComponents++;
     
 });
@@ -160,4 +169,4 @@ allComponents.push( new Component('Peanut Butter', 'prop', 4));
 
 //allComponents[0].addCompatibility(allComponents[1]);
 
-console.log(allComponents);
+//console.log(allComponents);
